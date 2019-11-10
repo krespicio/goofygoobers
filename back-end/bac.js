@@ -50,6 +50,7 @@ function another_shot_pls(drinks, body_mass, is_male, hours){
 
 module.exports = {
 calculate_BAC,
-time_until_another_drink,
-another_shot_pls
+time_until_legal,
+another_shot_pls,
+round
 }
