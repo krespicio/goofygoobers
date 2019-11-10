@@ -18,6 +18,7 @@ export default class App extends React.Component {
       gestureName: 'none',
       messages: [],
       darkMode: false,
+      info: []
     };
   }
 
@@ -52,13 +53,13 @@ export default class App extends React.Component {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
     }));
-    this.reply();
+    this.reply(messages);
   }
 
-  reply() {
+  reply(message) {
+    console.log(this.state.messages.length)
     if (this.state.messages.length === 2) {
-      console.log('hi')
-      const msg = {
+      const goodNameMsg = {
         _id: uuid.v4(),
         createdAt: new Date(),
         text: "That's a pretty sexy name!",
@@ -69,9 +70,67 @@ export default class App extends React.Component {
         }
       }
       this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, msg),
+        messages: GiftedChat.append(previousState.messages, goodNameMsg),
+      }));
+      const moreInfoMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text: "Tell me more about yourself. Preferably, your age, sex, weight, height. I'm just asking for a friend 🙈",
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, moreInfoMsg),
+      }));
+    } else if (this.state.messages.length === 5) {
+      const info = this.parseInfo(message);
+      const text = "So, you weigh " + info.weight + " measure " + info.height + " in height. Also you're a " + info.age + " year old " + info.gender + "."
+      const fattyMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text,
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, fattyMsg),
       }));
     }
+  }
+
+  parseInfo(message) {
+    const text = message[0].text.toLowerCase().split(" ");
+
+    const genders = ["nb", "nonbinary", "non-binary", "f", "female", 'girl', 'woman', "m", "male", 'boy', 'man'];
+    const coeffs = ["age", "weight", "height"];
+
+    let obj = {};
+    let index = 0;
+
+    for (let i = 0; i < text.length; i++) {
+      let genderIndex = genders.indexOf(text[i])
+      if (!isNaN(text[i])) {
+        obj[coeffs[index]] = text[i];
+        index++;
+      } else if (genderIndex !== -1) {
+
+        if (genderIndex >= 0 && genderIndex <= 2) {
+          obj["gender"] = "person";
+        } else if (genderIndex >= 3 && genderIndex <= 6) {
+          obj["gender"] = "girly";
+        } else {
+          obj["gender"] = "boy";
+        }
+
+      }
+    }
+    return obj;
   }
 
   toggleDarkMode() {
