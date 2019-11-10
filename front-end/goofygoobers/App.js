@@ -182,6 +182,10 @@ export default class App extends React.Component {
     }
   }
 
+  goHome() {
+    this.setState({ page: 0 })
+  }
+
   render() {
 
     const config = {
@@ -199,7 +203,7 @@ export default class App extends React.Component {
         accessibilityLabel='main'
         testID='main'>
         <Header
-          leftComponent={<Icon name="home" size={30} color="white" />}
+          leftComponent={<Icon name="home" size={30} color="white" onPress={() => this.goHome()} />}
           leftContainerStyle={{ flex: 2 }}
           centerComponent={{ text: 'Beer Bear', style: { color: '#fff' } }}
           rightComponent={<FlipToggle
