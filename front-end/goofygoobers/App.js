@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 // import { Font, AppLoading } from 'expo';
 import Chat from './components/Chat'
+import Graph from './components/Graphs';
 
 export default class App extends React.Component {
   render() {
@@ -11,7 +12,8 @@ export default class App extends React.Component {
         accessible
         accessibilityLabel='main'
         testID='main'>
-        <Chat />
+        {/* <Chat /> */}
+        <Graph />
       </View>
     )
   }
