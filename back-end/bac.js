@@ -2,7 +2,9 @@ function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
 }
 
-function calculate_BAC(drinks, body_mass, is_male, hours) {
+function calculate_BAC(drinks, weight, is_male, hours) {
+
+    body_mass = weight / 2.205
 
     grams_of_alcohol = drinks * 16
     if (is_male) {
@@ -20,8 +22,10 @@ function calculate_BAC(drinks, body_mass, is_male, hours) {
     return round(BAC, 2)
 }
 
-function time_until_legal(drinks, body_mass, is_male, hours){
+function time_until_legal(drinks, weight, is_male, hours){
     
+    body_mass = weight / 2.205
+
     time = 0
     
     while(calculate_BAC(drinks, body_mass, is_male, hours) >= 0.08) {
@@ -32,10 +36,11 @@ function time_until_legal(drinks, body_mass, is_male, hours){
     return time
 }
 
-function another_shot_pls(drinks, body_mass, is_male, hours){
-    time_until_another_drink = time_until_legal(drinks, body_mass, is_male, hours)
+function another_shot_pls(drinks, weight, is_male, hours){
+    
+    body_mass = weight / 2.205
 
-    console.log(time_until_another_drink)
+    time_until_another_drink = time_until_legal(drinks, body_mass, is_male, hours)
     
     if (time_until_another_drink != 0){
         
@@ -47,6 +52,38 @@ function another_shot_pls(drinks, body_mass, is_male, hours){
         return ("GO CRAZY!!")
     }
 }
+
+function drunk_scale(drinks, weight, is_male, hours){
+
+    bac = calculate_BAC(drinks, weight, is_male, hours)
+    
+
+    if (bac >= 0.2) {
+        scale = 100
+    }
+
+    else if (bac >= 0.15) {
+        scale = 10
+    }
+
+    else if (bac >= 0.1) {
+
+        scale = 9
+    }
+
+    else if (bac >= 0.8) {
+
+        scale = 8
+    }
+
+    else {
+
+        scale = bac * 10
+    }
+
+    return round(scale, 1)
+}
+
 
 module.exports = {
 calculate_BAC,
