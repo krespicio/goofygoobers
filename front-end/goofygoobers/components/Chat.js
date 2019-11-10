@@ -20,7 +20,7 @@ export default class Chat extends React.Component {
                     user: {
                         _id: 2,
                         name: 'Beer Bear',
-                        avatar: require('../galarian_zigzagoon.jpg'),
+                        avatar: require('../BeerBear.png'),
                     },
                 },
             ],
