@@ -10,6 +10,7 @@ import Graph from './components/Graphs'
 import uuid from 'uuid'
 import Articles from './components/Articles';
 import FlipToggle from 'react-native-flip-toggle-button'
+import link from './link'
 
 
 export default class App extends React.Component {
@@ -20,7 +21,7 @@ export default class App extends React.Component {
       gestureName: 'none',
       messages: [],
       darkMode: false,
-      info: []
+      message: ""
     };
   }
 
@@ -54,6 +55,7 @@ export default class App extends React.Component {
   onSend(messages = []) {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
+      message: messages[0]
     }));
     this.reply(messages);
   }
@@ -103,8 +105,80 @@ export default class App extends React.Component {
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, fattyMsg),
       }));
+      const drinkingMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text: "Can you tell how much you've been drinking and what time you started?",
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, drinkingMsg),
+      }));
+    } else if (this.state.messages.length === 8) {
+      const text = "ok sir"
+      const drunkMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text,
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, drunkMsg),
+      }));
     }
   }
+
+  // grabDrunkDetails(){
+
+  // }
+
+  // getBac() {
+  //   fetch(link + '/getBac', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+
+  //     })
+  //   }).then(responseJSON => responseJSON.json()
+  //   ).then(response => console.log(response))
+  // }
+
+  // getLegalTime() {
+  //   const bindedOnSend = this.onSend.bind(this);
+  //   fetch(link + '/getLegalTime', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+
+  //     })
+  //   }).then(responseJSON => responseJSON.json()
+  //   ).then(response => console.log(response))
+  // }
+
+  // getAnotherShot() {
+  //   fetch(link + '/getAnotherShot', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+
+  //     })
+  //   }).then(responseJSON => responseJSON.json()
+  //   ).then(response => console.log(response))
+  // }
 
   parseInfo(message) {
     const text = message[0].text.toLowerCase().split(" ");
@@ -134,6 +208,8 @@ export default class App extends React.Component {
     }
     return obj;
   }
+
+
 
   toggleDarkMode() {
     this.setState({ darkMode: !this.state.darkMode })
