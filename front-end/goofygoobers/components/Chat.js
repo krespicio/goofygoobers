@@ -7,25 +7,25 @@ import uuid from 'uuid'
 export default class Chat extends React.Component {
     state = {
         messages: [],
-        count: 0
     }
 
-    componentWillMount() {
-        this.setState({
-            messages: [
-                {
-                    _id: 1,
-                    text: 'Hey there! My name is Beer Bear and I’m here to help you drink responsibly 😋',
-                    createdAt: new Date(),
-                    user: {
-                        _id: 2,
-                        name: 'Beer Bear',
-                        avatar: require('../BeerBear.png'),
-                    },
-                },
-            ],
-        })
-    }
+
+    // componentWillMount() {
+    //     this.setState({
+    //         messages: [
+    //             {
+    //                 _id: 1,
+    //                 text: 'Hey there! My name is Beer Bear and I’m here to help you drink responsibly 😋',
+    //                 createdAt: new Date(),
+    //                 user: {
+    //                     _id: 2,
+    //                     name: 'Beer Bear',
+    //                     avatar: require('../galarian_zigzagoon.jpg'),
+    //                 },
+    //             },
+    //         ],
+    //     })
+    // }
 
     onSend(messages = []) {
         this.setState(previousState => ({
@@ -40,9 +40,9 @@ export default class Chat extends React.Component {
             accessibilityLabel='main'
             testID='main'>
             <GiftedChat
-                messages={this.state.messages}
+                messages={this.props.msgs}
                 onSend={messages =>
-                    this.onSend(messages)
+                    this.props.onSend(messages)
                 }
                 user={{
                     _id: 1,
