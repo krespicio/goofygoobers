@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import { GiftedChat } from 'react-native-gifted-chat'
+import { Header, Button } from 'react-native-elements';
 // import { Font, AppLoading } from 'expo';
 import Chat from './components/Chat'
 import Graph from './components/Graphs'
@@ -15,6 +16,7 @@ export default class App extends React.Component {
       page: 0,
       gestureName: 'none',
       messages: [],
+      darkMode: false,
     };
   }
 
@@ -71,6 +73,10 @@ export default class App extends React.Component {
     }
   }
 
+  toggleDarkMode() {
+    this.setState({ darkMode: !this.state.darkMode })
+  }
+
   onSwipeUp(gestureState) {
     // this.setState({ myText: 'You swiped up!' });
   }
@@ -113,12 +119,22 @@ export default class App extends React.Component {
       directionalOffsetThreshold: 80
     };
 
+    const modeTitle = this.state.darkMode ? "Dark Mode" : "Light Mode";
+    const backgroundColor = this.state.darkMode ? "#333" : '#fff';
+
     return (
       <View
-        style={styles.container}
+        style={{ ...styles.container, backgroundColor }}
         accessible
         accessibilityLabel='main'
         testID='main'>
+        <Header
+          leftComponent={<Button title={modeTitle} onPress={() => this.toggleDarkMode()} />}
+          leftContainerStyle={{ flex: 2 }}
+          centerComponent={{ text: 'Beer Bear', style: { color: '#fff' } }}
+          rightComponent={<Button title={modeTitle} onPress={() => this.toggleDarkMode()} />}
+          rightContainerStyle={{ flex: 2 }}
+        />
         <GestureRecognizer
           onSwipe={() => this.onSwipe()}
           onSwipeUp={() => this.onSwipeUp()}
@@ -132,7 +148,7 @@ export default class App extends React.Component {
           }}
         >
           {/* <Text style={{ fontSize: 100 }}>{this.state.messages[0].text}</Text> */}
-          {this.state.page ? <Graph /> : <Chat msgs={this.state.messages} onSend={(msg) => this.onSend(msg)} />}
+          {this.state.page ? <Graph darkMode={this.state.darkMode} /> : <Chat msgs={this.state.messages} onSend={(msg) => this.onSend(msg)} darkMode={this.state.darkMode} />}
         </GestureRecognizer>
       </View >
     )
@@ -142,7 +158,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
     // alignItems: 'center',
     // justifyContent: 'center',
   },
