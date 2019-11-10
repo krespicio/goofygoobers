@@ -7,6 +7,7 @@ import { Header, Button } from 'react-native-elements';
 import Chat from './components/Chat'
 import Graph from './components/Graphs'
 import uuid from 'uuid'
+import Articles from './components/Articles';
 
 
 export default class App extends React.Component {
@@ -86,11 +87,19 @@ export default class App extends React.Component {
   }
 
   onSwipeLeft(gestureState) {
-    this.setState({ page: this.state.page - 1 });
+    if (this.state.page === -1) {
+      this.setState({ page: 0 });
+    } else if (this.state.page === 0) {
+      this.setState({ page: 1 });
+    }
   }
 
   onSwipeRight(gestureState) {
-    this.setState({ page: this.state.page + 1 });
+    if (this.state.page === 1) {
+      this.setState({ page: 0 });
+    } else if (this.state.page === 0) {
+      this.setState({ page: - 1 });
+    }
   }
 
   onSwipe(gestureName, gestureState) {
@@ -148,7 +157,10 @@ export default class App extends React.Component {
           }}
         >
           {/* <Text style={{ fontSize: 100 }}>{this.state.messages[0].text}</Text> */}
-          {this.state.page ? <Graph darkMode={this.state.darkMode} /> : <Chat msgs={this.state.messages} onSend={(msg) => this.onSend(msg)} darkMode={this.state.darkMode} />}
+          {/* {this.state.page ? : } */}
+          {this.state.page === 0 && <Chat msgs={this.state.messages} onSend={(msg) => this.onSend(msg)} darkMode={this.state.darkMode} />}
+          {this.state.page === 1 && <Graph darkMode={this.state.darkMode} />}
+          {this.state.page === -1 && <Articles darkMode={this.state.darkMode} />}
         </GestureRecognizer>
       </View >
     )
