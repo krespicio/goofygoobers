@@ -1,41 +1,22 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat'
-import { Button } from 'react-native-elements';
-import uuid from 'uuid'
+import { GiftedChat, InputToolbar } from 'react-native-gifted-chat'
 
 export default class Chat extends React.Component {
-    state = {
-        messages: [],
-    }
-
-
-    // componentWillMount() {
-    //     this.setState({
-    //         messages: [
-    //             {
-    //                 _id: 1,
-    //                 text: 'Hey there! My name is Beer Bear and I’m here to help you drink responsibly 😋',
-    //                 createdAt: new Date(),
-    //                 user: {
-    //                     _id: 2,
-    //                     name: 'Beer Bear',
-    //                     avatar: require('../galarian_zigzagoon.jpg'),
-    //                 },
-    //             },
-    //         ],
-    //     })
-    // }
-
-    onSend(messages = []) {
-        this.setState(previousState => ({
-            messages: GiftedChat.append(previousState.messages, messages),
-        }))
+    renderInputToolbar(props) {
+        const color = this.props.darkMode ? 'white' : 'black';
+        return (
+            < InputToolbar textInputStyle={{ color }} containerStyle={{ backgroundColor: props.background }
+            }{...props} />
+        )
     }
 
     render() {
+        const background = this.props.darkMode ? styles.light : styles.dark;
+        const color = this.props.darkMode ? 'white' : 'white';
+
         return (<View
-            style={styles.container}
+            style={{ ...styles.container, ...background, color }}
             accessible
             accessibilityLabel='main'
             testID='main'>
@@ -47,25 +28,8 @@ export default class Chat extends React.Component {
                 user={{
                     _id: 1,
                 }}
+                renderInputToolbar={this.renderInputToolbar.bind(this)}
             />
-            <Button title="fuck me" onPress={() => this.onSend({
-                _id: uuid.v4(),
-                createdAt: new Date(),
-                text: "fuck me",
-                user: {
-                    _id: 1,
-                }
-            })} />
-            <Button title="fuck you" onPress={() => this.onSend({
-                _id: uuid.v4(),
-                createdAt: new Date(),
-                text: "fuck you",
-                user: {
-                    _id: 2,
-                    name: "Beer Bear",
-                    avatar: require('../galarian_zigzagoon.jpg')
-                }
-            })} />
         </View>)
     }
 }
@@ -73,8 +37,14 @@ export default class Chat extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        // backgroundColor: '#fff',
         // alignItems: 'center',
         // justifyContent: 'center',
     },
+    dark: {
+        backgroundColor: '#fff'
+    },
+    light: {
+        backgroundColor: '#333'
+    }
 });
