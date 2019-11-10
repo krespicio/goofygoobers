@@ -3,11 +3,13 @@ import { StyleSheet, Text, View } from 'react-native';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Header, Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 // import { Font, AppLoading } from 'expo';
 import Chat from './components/Chat'
 import Graph from './components/Graphs'
 import uuid from 'uuid'
 import Articles from './components/Articles';
+import FlipToggle from 'react-native-flip-toggle-button'
 
 
 export default class App extends React.Component {
@@ -197,10 +199,25 @@ export default class App extends React.Component {
         accessibilityLabel='main'
         testID='main'>
         <Header
-          leftComponent={<Button title={modeTitle} onPress={() => this.toggleDarkMode()} />}
+          leftComponent={<Icon name="home" size={30} color="white" />}
           leftContainerStyle={{ flex: 2 }}
           centerComponent={{ text: 'Beer Bear', style: { color: '#fff' } }}
-          rightComponent={<Button title={modeTitle} onPress={() => this.toggleDarkMode()} />}
+          rightComponent={<FlipToggle
+            value={this.state.darkMode}
+            buttonWidth={60}
+            buttonHeight={30}
+            buttonRadius={50}
+            sliderWidth={10}
+            sliderHeight={10}
+            sliderRadius={1000}
+            onLabel={'Light'}
+            offLabel={'Dark'}
+            buttonOnColor={'white'}
+            buttonOffColor={'#333'}
+            labelStyle={{ color: backgroundColor }}
+            onToggle={() => this.toggleDarkMode()}
+            onToggleLongPress={() => console.log('toggle long pressed!')}
+          />}
           rightContainerStyle={{ flex: 2 }}
         />
         <GestureRecognizer
