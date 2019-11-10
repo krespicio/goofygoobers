@@ -128,7 +128,7 @@ export default class App extends React.Component {
       directionalOffsetThreshold: 80
     };
 
-    const modeTitle = this.state.darkMode ? "Dark Mode" : "Light Mode";
+    const modeTitle = !this.state.darkMode ? "Dark Mode" : "Light Mode";
     const backgroundColor = this.state.darkMode ? "#333" : '#fff';
 
     return (
