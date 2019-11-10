@@ -4,7 +4,7 @@ import { LineChart } from 'react-native-chart-kit'
 import { Calendar } from 'react-native-calendars';
 
 const linedata = {
-    labels: ['2019-10-23', '2019-10-26', '2019-10-28', '2019-10-29', '2010-11-31'], '2019-11-9': { marked: true, dotColor: 'yellow', activeOpacity: 0 },
+    labels: ['10/23', '10/26', '10/28', '10/29', '10/31'], '2019-11-9': { marked: true, dotColor: 'yellow', activeOpacity: 0 },
     datasets: [
         {
             data: [6, 3, 3, 9, 8],
