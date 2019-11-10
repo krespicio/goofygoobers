@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 app.post("/getBac", (req,res) => {
     //console.log(bac.calculate_BAC(req.body.numberOfDrinks, req.body.weight, req.body.gender, req.body.hours));
     let isBoy = req.body.gender === "girly" ? false : true;
+
     let cab = {bac: bac.calculate_BAC(req.body.numberOfDrinks, req.body.weight, isBoy, req.body.hours)};
     // res.json({hdsajfhl: fdsfhad})
     console.log(req.body, bac.calculate_BAC(req.body.numberOfDrinks, req.body.weight, isBoy, req.body.hours));

@@ -84,6 +84,7 @@ function drunk_scale(drinks, weight, is_male, hours){
     return round(scale, 1)
 }
 
+console.log(calculate_BAC(12, 381, false, 2))
 
 module.exports = {
 calculate_BAC,
