@@ -47,3 +47,9 @@ function another_shot_pls(drinks, body_mass, is_male, hours){
         return ("GO CRAZY!!")
     }
 }
+
+module.exports = {
+calculate_BAC,
+time_until_another_drink,
+another_shot_pls
+}

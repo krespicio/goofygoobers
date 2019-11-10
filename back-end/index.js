@@ -10,7 +10,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/beer", (req, res) => {
-    res.json({success: true, msg: "we did it"})
+    // res.json({success: true, msg: "we did it"})
     bac.another_shot_pls();
 })
 
