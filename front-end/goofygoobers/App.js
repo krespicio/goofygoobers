@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
+import { GiftedChat } from 'react-native-gifted-chat'
 // import { Font, AppLoading } from 'expo';
 import Chat from './components/Chat'
-import Graph from './components/Graphs';
+import Graph from './components/Graphs';;
+
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,25 +13,48 @@ export default class App extends React.Component {
     this.state = {
       page: 0,
       gestureName: 'none',
-      backgroundColor: '#fff',
-      myText: ''
+      messages: []
     };
   }
 
+  componentWillMount() {
+    this.setState({
+      messages: [
+        {
+          _id: 1,
+          text: 'Hey there! My name is Beer Bear and I’m here to help you drink responsibly 😋',
+          createdAt: new Date(),
+          user: {
+            _id: 2,
+            name: 'Beer Bear',
+            avatar: require('./galarian_zigzagoon.jpg'),
+          },
+        },
+      ],
+    })
+  }
+
+  onSend(messages = []) {
+    this.setState(previousState => ({
+      messages: GiftedChat.append(previousState.messages, messages),
+    }))
+    console.log('hi', messages)
+  }
+
   onSwipeUp(gestureState) {
-    this.setState({ myText: 'You swiped up!' });
+    // this.setState({ myText: 'You swiped up!' });
   }
 
   onSwipeDown(gestureState) {
-    this.setState({ myText: 'You swiped down!' });
+    // this.setState({ myText: 'You swiped down!' });
   }
 
   onSwipeLeft(gestureState) {
-    this.setState({ myText: 'You swiped left!', page: this.state.page - 1 });
+    this.setState({ page: this.state.page - 1 });
   }
 
   onSwipeRight(gestureState) {
-    this.setState({ myText: 'You swiped right!', page: this.state.page + 1 });
+    this.setState({ page: this.state.page + 1 });
   }
 
   onSwipe(gestureName, gestureState) {
@@ -76,13 +101,10 @@ export default class App extends React.Component {
             backgroundColor: this.state.backgroundColor
           }}
         >
-          {this.state.page ? <Graph /> : <Chat />}
-          {/* <Text>{this.state.myText}</Text> */}
-          {/* <Text>onSwipe callback received gesture: {this.state.gestureName}</Text> */}
-          {/* {this.state.page ? <Chat /> : <Graph />} */}
+          {/* <Text style={{ fontSize: 100 }}>{this.state.messages[0].text}</Text> */}
+          {this.state.page ? <Graph /> : <Chat msgs={this.state.messages} onSend={(msg) => this.onSend(msg)} />}
         </GestureRecognizer>
-        {/* <Text>onSwipe callback received gesture: {this.state.gestureName}</Text> */}
-      </View>
+      </View >
     )
   }
 }
