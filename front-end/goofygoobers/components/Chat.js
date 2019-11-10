@@ -15,11 +15,11 @@ export default class Chat extends React.Component {
             messages: [
                 {
                     _id: 1,
-                    text: 'Hello developer',
+                    text: 'Hey there! My name is Beer Bear and I’m here to help you drink responsibly 😋',
                     createdAt: new Date(),
                     user: {
                         _id: 2,
-                        name: 'Joe Mama',
+                        name: 'Beer Bear',
                         avatar: require('../galarian_zigzagoon.jpg'),
                     },
                 },
@@ -62,7 +62,7 @@ export default class Chat extends React.Component {
                 text: "fuck you",
                 user: {
                     _id: 2,
-                    name: "Joe Mama",
+                    name: "Beer Bear",
                     avatar: require('../galarian_zigzagoon.jpg')
                 }
             })} />
