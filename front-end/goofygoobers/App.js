@@ -4,7 +4,8 @@ import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures'
 import { GiftedChat } from 'react-native-gifted-chat'
 // import { Font, AppLoading } from 'expo';
 import Chat from './components/Chat'
-import Graph from './components/Graphs';;
+import Graph from './components/Graphs'
+import uuid from 'uuid'
 
 
 export default class App extends React.Component {
@@ -13,7 +14,7 @@ export default class App extends React.Component {
     this.state = {
       page: 0,
       gestureName: 'none',
-      messages: []
+      messages: [],
     };
   }
 
@@ -21,13 +22,23 @@ export default class App extends React.Component {
     this.setState({
       messages: [
         {
+          _id: uuid.v4(),
+          createdAt: new Date(),
+          text: "What is you name?",
+          user: {
+            _id: 2,
+            name: "Beer Bear",
+            avatar: require('./BeerBear.png')
+          }
+        },
+        {
           _id: 1,
           text: 'Hey there! My name is Beer Bear and I’m here to help you drink responsibly 😋',
           createdAt: new Date(),
           user: {
             _id: 2,
             name: 'Beer Bear',
-            avatar: require('./galarian_zigzagoon.jpg'),
+            avatar: require('./BeerBear.png'),
           },
         },
       ],
@@ -37,8 +48,27 @@ export default class App extends React.Component {
   onSend(messages = []) {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
-    }))
-    console.log('hi', messages)
+    }));
+    this.reply();
+  }
+
+  reply() {
+    if (this.state.messages.length === 2) {
+      console.log('hi')
+      const msg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text: "That's a pretty sexy name!",
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, msg),
+      }));
+    }
   }
 
   onSwipeUp(gestureState) {

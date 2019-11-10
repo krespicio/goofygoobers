@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Button } from 'react-native-elements';
-import uuid from 'uuid'
 
 export default class Chat extends React.Component {
     state = {
@@ -48,7 +47,7 @@ export default class Chat extends React.Component {
                     _id: 1,
                 }}
             />
-            <Button title="fuck me" onPress={() => this.onSend({
+            {/* <Button title="fuck me" onPress={() => this.onSend({
                 _id: uuid.v4(),
                 createdAt: new Date(),
                 text: "fuck me",
@@ -65,7 +64,7 @@ export default class Chat extends React.Component {
                     name: "Beer Bear",
                     avatar: require('../galarian_zigzagoon.jpg')
                 }
-            })} />
+            })} /> */}
         </View>)
     }
 }
