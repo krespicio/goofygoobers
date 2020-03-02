@@ -3,11 +3,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import GestureRecognizer, { swipeDirections } from 'react-native-swipe-gestures';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { Header, Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 // import { Font, AppLoading } from 'expo';
 import Chat from './components/Chat'
 import Graph from './components/Graphs'
 import uuid from 'uuid'
 import Articles from './components/Articles';
+import FlipToggle from 'react-native-flip-toggle-button'
+import link from './link'
 
 
 export default class App extends React.Component {
@@ -18,6 +21,7 @@ export default class App extends React.Component {
       gestureName: 'none',
       messages: [],
       darkMode: false,
+      message: ""
     };
   }
 
@@ -51,14 +55,15 @@ export default class App extends React.Component {
   onSend(messages = []) {
     this.setState(previousState => ({
       messages: GiftedChat.append(previousState.messages, messages),
+      message: messages[0]
     }));
-    this.reply();
+    this.reply(messages);
   }
 
-  reply() {
+  reply(message) {
+    console.log(this.state.messages.length)
     if (this.state.messages.length === 2) {
-      console.log('hi')
-      const msg = {
+      const goodNameMsg = {
         _id: uuid.v4(),
         createdAt: new Date(),
         text: "That's a pretty sexy name!",
@@ -69,10 +74,142 @@ export default class App extends React.Component {
         }
       }
       this.setState(previousState => ({
-        messages: GiftedChat.append(previousState.messages, msg),
+        messages: GiftedChat.append(previousState.messages, goodNameMsg),
+      }));
+      const moreInfoMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text: "Tell me more about yourself. Preferably, your age, sex, weight, height. I'm just asking for a friend 🙈",
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, moreInfoMsg),
+      }));
+    } else if (this.state.messages.length === 5) {
+      const info = this.parseInfo(message);
+      const text = "So, you weigh " + info.weight + " measure " + info.height + " in height. Also you're a " + info.age + " year old " + info.gender + "."
+      const fattyMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text,
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, fattyMsg),
+      }));
+      const drinkingMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text: "Can you tell how much you've been drinking and what time you started?",
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, drinkingMsg),
+      }));
+    } else if (this.state.messages.length === 8) {
+      const text = "ok sir"
+      const drunkMsg = {
+        _id: uuid.v4(),
+        createdAt: new Date(),
+        text,
+        user: {
+          _id: 2,
+          name: "Beer Bear",
+          avatar: require('./BeerBear.png')
+        }
+      }
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, drunkMsg),
       }));
     }
   }
+
+  // grabDrunkDetails(){
+
+  // }
+
+  // getBac() {
+  //   fetch(link + '/getBac', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+
+  //     })
+  //   }).then(responseJSON => responseJSON.json()
+  //   ).then(response => console.log(response))
+  // }
+
+  // getLegalTime() {
+  //   const bindedOnSend = this.onSend.bind(this);
+  //   fetch(link + '/getLegalTime', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+
+  //     })
+  //   }).then(responseJSON => responseJSON.json()
+  //   ).then(response => console.log(response))
+  // }
+
+  // getAnotherShot() {
+  //   fetch(link + '/getAnotherShot', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //     body: JSON.stringify({
+
+  //     })
+  //   }).then(responseJSON => responseJSON.json()
+  //   ).then(response => console.log(response))
+  // }
+
+  parseInfo(message) {
+    const text = message[0].text.toLowerCase().split(" ");
+
+    const genders = ["nb", "nonbinary", "non-binary", "f", "female", 'girl', 'woman', "m", "male", 'boy', 'man'];
+    const coeffs = ["age", "weight", "height"];
+
+    let obj = {};
+    let index = 0;
+
+    for (let i = 0; i < text.length; i++) {
+      let genderIndex = genders.indexOf(text[i])
+      if (!isNaN(text[i])) {
+        obj[coeffs[index]] = text[i];
+        index++;
+      } else if (genderIndex !== -1) {
+
+        if (genderIndex >= 0 && genderIndex <= 2) {
+          obj["gender"] = "person";
+        } else if (genderIndex >= 3 && genderIndex <= 6) {
+          obj["gender"] = "girly";
+        } else {
+          obj["gender"] = "boy";
+        }
+
+      }
+    }
+    return obj;
+  }
+
+
 
   toggleDarkMode() {
     this.setState({ darkMode: !this.state.darkMode })
@@ -121,6 +258,10 @@ export default class App extends React.Component {
     }
   }
 
+  goHome() {
+    this.setState({ page: 0 })
+  }
+
   render() {
 
     const config = {
@@ -138,10 +279,25 @@ export default class App extends React.Component {
         accessibilityLabel='main'
         testID='main'>
         <Header
-          leftComponent={<Button title={modeTitle} onPress={() => this.toggleDarkMode()} />}
+          leftComponent={<Icon name="home" size={30} color="white" onPress={() => this.goHome()} />}
           leftContainerStyle={{ flex: 2 }}
           centerComponent={{ text: 'Beer Bear', style: { color: '#fff' } }}
-          rightComponent={<Button title={modeTitle} onPress={() => this.toggleDarkMode()} />}
+          rightComponent={<FlipToggle
+            value={this.state.darkMode}
+            buttonWidth={60}
+            buttonHeight={30}
+            buttonRadius={50}
+            sliderWidth={10}
+            sliderHeight={10}
+            sliderRadius={1000}
+            onLabel={'Light'}
+            offLabel={'Dark'}
+            buttonOnColor={'white'}
+            buttonOffColor={'#333'}
+            labelStyle={{ color: backgroundColor }}
+            onToggle={() => this.toggleDarkMode()}
+            onToggleLongPress={() => console.log('toggle long pressed!')}
+          />}
           rightContainerStyle={{ flex: 2 }}
         />
         <GestureRecognizer
